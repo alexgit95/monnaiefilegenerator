@@ -2,6 +2,7 @@ package alexgit95.batch.monnaiefilegenerator.services.impl;
 
 import alexgit95.batch.monnaiefilegenerator.MonnaiefilegeneratorApplication;
 import alexgit95.batch.monnaiefilegenerator.model.Medaille;
+import alexgit95.batch.monnaiefilegenerator.model.MedalsCollection;
 import alexgit95.batch.monnaiefilegenerator.services.ExportToFilesServices;
 import alexgit95.batch.monnaiefilegenerator.services.OrchestratorServices;
 import com.google.gson.Gson;
@@ -69,7 +70,7 @@ public class OrchestratorServicesImpl implements OrchestratorServices {
         logger.info("Generation des fichiers sorties");
         if(generateJson){
             logger.info("Generation du json...");
-            exportToFilesServices.exportToJSONFile(inputCsvFile, allMedals);
+            exportToFilesServices.exportToJSONFile(inputCsvFile, buildCollection(allMedals));
             logger.info("Fin Generation du json...");
         }
 
@@ -129,6 +130,20 @@ public class OrchestratorServicesImpl implements OrchestratorServices {
             sb.append("| "+medaille.getNom()+" | "+medaille.getVille()+" | "+medaille.getValue() +" | \n");
         }
         return sb.toString();
+    }
+
+    private MedalsCollection buildCollection(List<Medaille> allMedals){
+        MedalsCollection collection = new MedalsCollection();
+        collection.setNbMedals(allMedals.size());
+        collection.setAllMedals(allMedals);
+        collection.setExportDate(new Date());
+        double somme=0;
+        for(Medaille temp : allMedals){
+            somme+=temp.getValue();
+        }
+        collection.setCollectionValue(somme);
+
+        return collection;
     }
 
 

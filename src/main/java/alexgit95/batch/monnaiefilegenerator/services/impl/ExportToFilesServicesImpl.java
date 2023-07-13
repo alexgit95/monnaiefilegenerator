@@ -1,6 +1,7 @@
 package alexgit95.batch.monnaiefilegenerator.services.impl;
 
 import alexgit95.batch.monnaiefilegenerator.model.Medaille;
+import alexgit95.batch.monnaiefilegenerator.model.MedalsCollection;
 import alexgit95.batch.monnaiefilegenerator.services.ExportToFilesServices;
 import com.google.gson.Gson;
 import org.apache.commons.io.FileUtils;
@@ -29,10 +30,10 @@ public class ExportToFilesServicesImpl implements ExportToFilesServices {
     }
 
     @Override
-    public void exportToJSONFile(File srcFile, List<Medaille> allMedals){
+    public void exportToJSONFile(File srcFile, MedalsCollection collection){
         File destFile =new File(srcFile.getParentFile(), "medals.js");
         Gson gson = new Gson();
-        String json = gson.toJson(allMedals);
+        String json = gson.toJson(collection);
         try {
             FileUtils.write(destFile, json, Charset.forName("UTF-8"));
         } catch (IOException e) {
