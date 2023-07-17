@@ -32,10 +32,12 @@ public class ExportToFilesServicesImpl implements ExportToFilesServices {
     @Override
     public void exportToJSONFile(File srcFile, MedalsCollection collection){
         File destFile =new File(srcFile.getParentFile(), "medals.js");
+        File destFileWeb =new File(srcFile.getParentFile(), "medals-web.js");
         Gson gson = new Gson();
         String json = gson.toJson(collection);
         try {
             FileUtils.write(destFile, json, Charset.forName("UTF-8"));
+            FileUtils.write(destFileWeb, "const data="+json, Charset.forName("UTF-8"));
         } catch (IOException e) {
             logger.error("Erreur lors de l'ecriture du fichier json", e);
         }
